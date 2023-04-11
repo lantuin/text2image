@@ -1,0 +1,5 @@
+diffusers
+transformers
+accelerate
+scipy
+xformers==0.0.16rc425
