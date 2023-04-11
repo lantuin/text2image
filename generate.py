@@ -153,12 +153,8 @@ prompts = ["A really giant cute pink barbie doll on the top of Burj Khalifa",
 
 imgs = model.prompt_to_img(prompts)
 
-#imgs[0].save(f'result_0.jpg')
-#imgs[1].save(f'result_1.jpg')
-
 var = 0
 
 while var < len(prompts):
     imgs[var].save(f'result_{var}.jpg')
-    #print(imgs[var])
     var += 1
