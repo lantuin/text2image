@@ -84,21 +84,14 @@ class ImageDiffusionModel:
          with torch.no_grad():
            imgs = self.vae.decode(img_latents)
 
-         imgs = (imgs.sample / 2 + 0.5).clamp(0, 1)
-         imgs = imgs.detach().cpu().permute(0, 2, 3, 1).numpy()
-         imgs = (imgs * 255).round().astype('uint8')
-         imgs = [Image.fromarray(image) for image in imgs]
-         return imgs
-
-     def transform_imgs(self, imgs):
          # transform images from the range [-1, 1] to [0, 1]
-         imgs = (imgs / 2 + 0.5).clamp(0, 1)
+         imgs = (imgs.sample / 2 + 0.5).clamp(0, 1)
          # permute the channels and convert to numpy arrays
-         imgs = imgs.permute(0, 2, 3, 1).numpy()
+         imgs = imgs.detach().cpu().permute(0, 2, 3, 1).numpy()
          # scale images to the range [0, 255] and convert to int
-         imgs = (imgs * 255).round().astype('uint8')        
+         imgs = (imgs * 255).round().astype('uint8')
          # convert to PIL Image objects
-         imgs = [Image.fromarray(img) for img in imgs]
+         imgs = [Image.fromarray(image) for image in imgs]
          return imgs
 
      def prompt_to_img(self, 
@@ -118,10 +111,8 @@ class ImageDiffusionModel:
                                        num_inference_steps,
                                        guidance_scale, 
                                        img_latents)
-         # decode the image embeddings
+         # decode the image embeddings and convert decoded image to suitable PIL Image format
          imgs = self.decode_transform_img_latents(img_latents)
-         # convert decoded image to suitable PIL Image format
-         # imgs = self.transform_imgs(imgs)
          return imgs
 
 device = 'cuda'
